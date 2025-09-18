@@ -1,0 +1,25 @@
+Stack<Integer> stack = new Stack<>(); //создание стека
+stack.push(1); //добавление элементов в стек
+stack.push(2);
+stack.push(3);
+while (!stack.empty()) {
+    System.out.println(stack.pop()); //вывод на экран элементов стека
+}
+
+
+import java.util.ArrayList;
+public class Main {
+    public static void main(String args) { 
+        ArrayList<String> fruits = new ArrayList<>(); // Создание массива
+        fruits.add("Яблоко"); // Добавление элементов в список
+        fruits.add("Банан");
+        fruits.add("Апельсин");
+        String fruit = fruits.get(1); / Получение элемента по индексу
+        System.out.println(fruit); // Выводит "Банан"
+        fruits.remove(0); // Удаление элемента
+        boolean contains = fruits.contains("Апельсин"); // Проверка наличия элемента в списке
+        System.out.println(contains); // Выводит "true"
+        int size = fruits.size(); // Получение размера списка
+        System.out.println(size); // Выводит "2"
+    }
+}
