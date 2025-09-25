@@ -1,0 +1,111 @@
+//ОДНОНАПРАВЛЕННЫЕ ЛИНЕЙНЫЕ СПИСКИ
+//ПЕРВЫЙ КОД НА С++
+#include <iostream>
+using namespace std;
+
+// Узел списка
+struct Node {
+    int data;       // Значение
+    Node* next;     // Ссылка на следующий узел
+};
+
+// Функция добавления в конец списка
+void add(Node*& head, int value) {
+    Node* newNode = new Node{value, nullptr}; // создаем новый узел
+    if (!head) {           // если список пуст
+        head = newNode;
+        return;
+    }
+    Node* temp = head;
+    while (temp->next)     // идем до конца
+        temp = temp->next;
+    temp->next = newNode;  // добавляем в конец
+}
+
+// Функция удаления по значению
+void remove(Node*& head, int value) {
+    if (!head) return;  // если список пуст
+    if (head->data == value) {      // удаление первого узла
+        Node* toDelete = head;
+        head = head->next;
+        delete toDelete;
+        return;
+    }
+    Node* temp = head;
+    while (temp->next && temp->next->data != value)
+        temp = temp->next;
+    if (temp->next) {               // если найден узел для удаления
+        Node* toDelete = temp->next;
+        temp->next = toDelete->next;
+        delete toDelete;
+    }
+}
+
+// Печать списка
+void print(Node* head) {
+    while (head) {
+        cout << head->data << " -> ";
+        head = head->next;
+    }
+    cout << "NULL\n";
+}
+
+// Главная функция
+int main() {
+    Node* head = nullptr;    // указатель на начало списка
+    add(head, 10);           // добавляем элементы
+    add(head, 20);
+    add(head, 30);
+    print(head);             // Вывод: 10 -> 20 -> 30 -> NULL
+    remove(head, 20);        // удаляем 20
+    print(head);             // Вывод: 10 -> 30 -> NULL
+    return 0;
+}
+
+//ВТОРОЙ КОД НА С++
+#include <iostream>
+using namespace std;
+
+// Структура узла списка
+struct Node {
+    int data;       // значение
+    Node* next;     // ссылка на следующий узел
+};
+
+// Функция добавления в конец списка
+void add(Node*& head, int value) {
+    Node* newNode = new Node{value, nullptr}; // создаем новый узел
+    if (!head) {
+        head = newNode; // если список пуст
+        return;
+    }
+    Node* temp = head;
+    while (temp->next) {
+        temp = temp->next; // идем до последнего элемента
+    }
+    temp->next = newNode; // добавляем новый узел в конец
+}
+
+// Функция подсчета количества узлов
+int countElements(Node* head) {
+    int count = 0;
+    while (head) {
+        count++;         // увеличиваем счетчик
+        head = head->next;
+    }
+    return count;
+}
+
+// Главная функция
+int main() {
+    Node* head = nullptr;   // начало списка
+    // Добавляем несколько элементов
+    add(head, 10);
+    add(head, 20);
+    add(head, 30);
+    add(head, 40);
+    // Считаем количество элементов
+    int total = countElements(head);
+    cout << "Количество элементов в списке: " << total << endl;
+    return 0;
+}
