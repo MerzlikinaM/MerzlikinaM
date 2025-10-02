@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class MinHeap {
+private:
+    vector<int> heap;
+
+    // Индекс родителя
+    int parent(int i) { return (i - 1) / 2; }
+
+    // Индексы левого и правого потомков
+    int left(int i)   { return 2 * i + 1; }
+    int right(int i)  { return 2 * i + 2; }
+
+    // Восстановление кучи снизу вверх (при вставке)
+    void heapifyUp(int i) {
+        // Пока текущий элемент меньше родителя — меняем местами
+        while (i != 0 && heap[parent(i)] > heap[i]) {
+            swap(heap[i], heap[parent(i)]);
+            i = parent(i);
+        }
+    }
+
+    // Восстановление кучи сверху вниз (при удалении)
+    void heapifyDown(int i) {
+        int smallest = i;
+        int l = left(i);
+        int r = right(i);
+
+        // Выбираем наименьший из текущего узла и его детей
+        if (l < heap.size() && heap[l] < heap[smallest]) smallest = l;
+        if (r < heap.size() && heap[r] < heap[smallest]) smallest = r;
+
+        // Если один из детей меньше — меняем местами и продолжаем вниз
+        if (smallest != i) {
+            swap(heap[i], heap[smallest]);
+            heapifyDown(smallest);
+        }
+    }
+
+public:
+    // Добавление элемента
+    void insert(int key) {
+        heap.push_back(key);         // Добавляем в конец
+        heapifyUp(heap.size() - 1);  // Поднимаем вверх, если нужно
+    }
+
+    // Получение минимума без удаления
+    int getMin() {
+        if (heap.empty()) throw out_of_range("Heap is empty");
+        return heap[0];
+    }
+
+    // Извлечение минимума
+    int extractMin() {
+        if (heap.empty()) throw out_of_range("Heap is empty");
+
+        int root = heap[0];           // Сохраняем корень
+        heap[0] = heap.back();        // Последний элемент становится корнем
+        heap.pop_back();              // Удаляем последний элемент
+        if (!heap.empty()) heapifyDown(0); // Восстанавливаем кучу сверху вниз
+        return root;
+    }
+
+    bool isEmpty() {
+        return heap.empty();
+    }
+};
