@@ -1,0 +1,83 @@
+import java.util.ArrayList;
+
+class MinHeap {
+    private ArrayList<Integer> heap = new ArrayList<>();
+
+    // Индексы родителя и потомков
+    private int parent(int i) { return (i - 1) / 2; }
+    private int left(int i)   { return 2 * i + 1; }
+    private int right(int i)  { return 2 * i + 2; }
+
+    // Перемещение элемента вверх
+    private void heapifyUp(int i) {
+        while (i > 0 && heap.get(parent(i)) > heap.get(i)) {
+            swap(i, parent(i));
+            i = parent(i);
+        }
+    }
+
+    // Перемещение элемента вниз
+    private void heapifyDown(int i) {
+        int smallest = i;
+        int l = left(i);
+        int r = right(i);
+
+        if (l < heap.size() && heap.get(l) < heap.get(smallest)) smallest = l;
+        if (r < heap.size() && heap.get(r) < heap.get(smallest)) smallest = r;
+
+        if (smallest != i) {
+            swap(i, smallest);
+            heapifyDown(smallest);
+        }
+    }
+
+    // Обмен элементов
+    private void swap(int i, int j) {
+        int tmp = heap.get(i);
+        heap.set(i, heap.get(j));
+        heap.set(j, tmp);
+    }
+
+    // Вставка
+    public void insert(int key) {
+        heap.add(key);
+        heapifyUp(heap.size() - 1);
+    }
+
+    // Получить минимум
+    public int getMin() {
+        if (heap.isEmpty()) throw new IllegalStateException("Heap is empty");
+        return heap.get(0);
+    }
+
+    // Извлечь минимум
+    public int extractMin() {
+        if (heap.isEmpty()) throw new IllegalStateException("Heap is empty");
+
+        int root = heap.get(0);
+        int last = heap.remove(heap.size() - 1);  // Удаляем последний элемент
+
+        if (!heap.isEmpty()) {
+            heap.set(0, last);   // Ставим последний элемент в корень
+            heapifyDown(0);      // Восстанавливаем кучу
+        }
+
+        return root;
+    }
+
+    public boolean isEmpty() {
+        return heap.isEmpty();
+    }
+
+    public static void main(String[] args) {
+        MinHeap h = new MinHeap();
+        h.insert(3);
+        h.insert(1);
+        h.insert(6);
+        h.insert(5);
+
+        System.out.println("Min: " + h.getMin());         // 1
+        System.out.println("Extracted: " + h.extractMin()); // 1
+        System.out.println("New Min: " + h.getMin());     // 3
+    }
+}
